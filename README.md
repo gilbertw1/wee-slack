@@ -13,6 +13,7 @@ A WeeChat native client for Slack.com. Provides supplemental features only avail
 Features
 --------
   * **New** [Threads](#threads) support!
+  * **New** [Slack Status](#status) support!
   * Slash commands (including custom ones!)
   * Upload to slack capabilities!
   * Emoji reactions!
@@ -88,7 +89,7 @@ weechat
 
 #### 4. Add your Slack API key(s)
 ```
-/set plugins.var.python.slack_extension.slack_api_token [YOUR_SLACK_TOKEN]
+/set plugins.var.python.slack.slack_api_token [YOUR_SLACK_TOKEN]
 ```
 ^^ (find this at https://api.slack.com/custom-integrations/legacy-tokens using the "Request token" button)
 
@@ -97,13 +98,13 @@ If you don't want to store your API token in plaintext you can use the secure fe
 ```
 /secure passphrase this is a super secret password
 /secure set slack_token [YOUR_SLACK_TOKEN]
-/set plugins.var.python.slack_extension.slack_api_token ${sec.data.slack_token}
+/set plugins.var.python.slack.slack_api_token ${sec.data.slack_token}
 ```
 
 ##### Optional: If you would like to connect to multiple groups, use the above command with multiple tokens separated by commas. (NO SPACES)
 
 ```
-/set plugins.var.python.slack_extension.slack_api_token [token1],[token2],[token3]
+/set plugins.var.python.slack.slack_api_token [token1],[token2],[token3]
 ```
 
 ### 5. $PROFIT$
@@ -209,27 +210,39 @@ Label a thread with a memorable name. The above command will open a channel call
 ```
 _Note: labels do not persist once a thread buffer is closed_
 
+#### Status
+
+Set your Slack status on a given team:
+```
+/slack status [:emoji:] [Status message]
+```
+
+Example:
+```
+/slack status :ghost: Boo!
+```
+
 Optional settings
 -----------------
 
 Turn off colorized nicks:
 ```
-/set plugins.var.python.slack_extension.colorize_nicks 0
+/set plugins.var.python.slack.colorize_nicks 0
 ```
 
 Turn on colorized messages (messages match nick color):
 ```
-/set plugins.var.python.slack_extension.colorize_nicks 1
+/set plugins.var.python.slack.colorize_nicks 1
 ```
 
 Set channel prefix to something other than my-slack-subdomain.slack.com (e.g. when using buffers.pl):
 ```
-/set plugins.var.python.slack_extension.server_alias.my-slack-subdomain "mysub"
+/set plugins.var.python.slack.server_aliases "my-slack-subdomain:mysub,other-domain:coolbeans"
 ```
 
 Show who added each reaction. Makes reactions appear like `[:smile:(@nick1,@nick2)]` instead of `[:smile:2]`.
 ```
-/set plugins.var.python.slack_extension.show_reaction_nicks on
+/set plugins.var.python.slack.show_reaction_nicks on
 ```
 
 Show typing notification in main bar (slack_typing_notice):
