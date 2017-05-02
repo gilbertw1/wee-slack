@@ -3229,6 +3229,7 @@ class PluginConfig(object):
     # extracted.
     # TODO: setting descriptions.
     settings = {
+        'colorize_messages': 'false',
         'colorize_private_chats': 'false',
         'debug_mode': 'false',
         'debug_level': '3',
