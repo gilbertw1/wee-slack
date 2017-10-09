@@ -34,7 +34,7 @@ Features
   * Away/back status handling
   * Expands/shows metadata for things like tweets/links
   * Displays edited messages (slack.com irc mode currently doesn't show these)
-  * *Super fun* debug mode. See what the websocket is saying with `/slack debug`
+  * *Super fun* debug mode. See what the websocket is saying
 
 In Development
 --------------
@@ -119,7 +119,6 @@ Commands
 Join a channel:
 ```
 /join [channel]
-/slack join [channel]
 ```
 
 Start a direct chat with someone:
@@ -156,6 +155,11 @@ Modify previous message:
 s/old text/new text/
 ```
 
+Modify 3rd previous message:
+```
+3s/old text/new text/
+```
+
 Replace all instances of text in previous message:
 ```
 s/old text/new text/g
@@ -172,11 +176,6 @@ Add a reaction to the nth last message. The number can be omitted and defaults t
 3+:smile:
 ```
 
-Set all read markers to a specific time:
-```
-/slack setallreadmarkers (time in epoch)
-```
-
 Upload a file to the current slack buffer:
 ```
 /slack upload [file_path]
@@ -185,11 +184,6 @@ Upload a file to the current slack buffer:
 Run a Slack slash command. Simply prepend `/slack slash` to what you'd type in the official clients.:
 ```
 /slack slash /desiredcommand arg1 arg2 arg3
-```
-
-Debug mode:
-```
-/slack debug
 ```
 
 #### Threads
@@ -225,16 +219,6 @@ Example:
 Optional settings
 -----------------
 
-Turn off colorized nicks:
-```
-/set plugins.var.python.slack.colorize_nicks 0
-```
-
-Turn on colorized messages (messages match nick color):
-```
-/set plugins.var.python.slack.colorize_nicks 1
-```
-
 Set channel prefix to something other than my-slack-subdomain.slack.com (e.g. when using buffers.pl):
 ```
 /set plugins.var.python.slack.server_aliases "my-slack-subdomain:mysub,other-domain:coolbeans"
@@ -253,6 +237,12 @@ Show typing notification in main bar (slack_typing_notice):
 Show channel name in hotlist after activity
 ```
 /set weechat.look.hotlist_names_level 14
+```
+
+Enable debug mode and change debug level (default 3, decrease to increase logging and vice versa):
+```
+/set plugins.var.python.slack.debug_mode on
+/set plugins.var.python.slack.debug_level 2
 ```
 
 Support
