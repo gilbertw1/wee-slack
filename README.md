@@ -1,10 +1,5 @@
-
-
 wee-slack
 =========
-
-**News:**
- 1.0-RC1 is here. It is a pretty massive refactor, and fixes many of the current issues listed on github. Because there was no good way to do this, it breaks some/many existing PRs. _(please report bugs in #wee-slack on freenode)_
 
 A WeeChat native client for Slack.com. Provides supplemental features only available in the web/mobile clients such as: synchronizing read markers, typing notification, threads (and more)! Connects via the Slack API, and maintains a persistent websocket for notification of events.
 
@@ -12,19 +7,18 @@ A WeeChat native client for Slack.com. Provides supplemental features only avail
 
 Features
 --------
-  * **New** [Threads](#threads) support!
-  * **New** [Slack Status](#status) support!
-  * Slash commands (including custom ones!)
-  * Upload to slack capabilities!
-  * Emoji reactions!
+  * [Threads](#threads) support
+  * [Slack Status](#status) support
+  * Slash commands (including custom ones)
+  * Upload to slack capabilities
+  * Emoji reactions
   * Edited messages work just like the official clients, where the original message changes and has (edited) appended.
   * Unfurled urls dont generate a new message, but replace the original with more info as it is received.
   * Regex style message editing (s/oldtext/newtext/)
-  * Caches message history, making startup MUCH faster
   * Smarter redraw of dynamic buffer info (much lower CPU %)
   * beta UTF-8 support
   * Doesn't use IRC gateway. Connects directly with Slack via API/Websocket
-  * Multiple Teams supported! Just add multiple api tokens separated by commas
+  * Multiple Teams supported. Just add multiple api tokens separated by commas
   * Replays history automatically during startup. (and sets read marker to the correct position in history)
   * Open channels synchronized with Slack. When you open/close a channel on another client it is reflected in wee-slack
   * Colorized nicks in buffer list when used with buffers.pl
@@ -88,10 +82,35 @@ weechat
 **NOTE:** If weechat is already running, the script can be loaded using ``/python load python/autoload/wee_slack.py``
 
 #### 4. Add your Slack API key(s)
+
+Log in to Slack:
+
+```
+/slack register
+```
+
+This command prints a link you should open in your browser to authorize WeeChat
+with Slack. Once you've accomplished this, copy the "code" portion of the URL in
+the browser and pass it to this command:
+
+```
+/slack register [YOUR_SLACK_TOKEN]
+```
+
+Your Slack team is now added, and you can complete setup by restarting the
+wee-slack plugin.
+
+```
+/python reload slack
+```
+
+Alternatively, you can click the "Request token" button at the
+[Slack legacy token page](https://api.slack.com/custom-integrations/legacy-tokens),
+and paste it directly into your settings:
+
 ```
 /set plugins.var.python.slack.slack_api_token [YOUR_SLACK_TOKEN]
 ```
-^^ (find this at https://api.slack.com/custom-integrations/legacy-tokens using the "Request token" button)
 
 If you don't want to store your API token in plaintext you can use the secure features of weechat:
 
@@ -121,10 +140,10 @@ Join a channel:
 /join [channel]
 ```
 
-Start a direct chat with someone:
+Start a direct chat with someone or multiple users:
 ```
-/query [username]
-/slack talk [username]
+/query <username>[,<username2>[,<username3>...]]
+/slack talk <username>[,<username2>[,<username3>...]]
 ```
 
 List channels:
@@ -186,6 +205,12 @@ Run a Slack slash command. Simply prepend `/slack slash` to what you'd type in t
 /slack slash /desiredcommand arg1 arg2 arg3
 ```
 
+To send a command as a normal message instead of performing the action, prefix it with a slash or a space, like so:
+```
+//slack
+ s/a/b/
+```
+
 #### Threads
 
 Start a new thread on the most recent message The number indicates which message in the buffer to reply to, in reverse time order:
@@ -216,6 +241,14 @@ Example:
 /slack status :ghost: Boo!
 ```
 
+#### Emoji tab completions
+
+To enable tab completion of emojis, copy or symlink the `weemoji.json` file to your weechat config directory (e.g. `~/.weechat`). Then append `|%(emoji)` to the `weechat.completion.default_template` config option, e.g. like this:
+
+```
+/set weechat.completion.default_template "%(nicks)|%(irc_channels)|%(emoji)"
+```
+
 Optional settings
 -----------------
 
@@ -239,11 +272,20 @@ Show channel name in hotlist after activity
 /set weechat.look.hotlist_names_level 14
 ```
 
+Debugging
+--------------
+
 Enable debug mode and change debug level (default 3, decrease to increase logging and vice versa):
 ```
 /set plugins.var.python.slack.debug_mode on
 /set plugins.var.python.slack.debug_level 2
 ```
+
+Dump the JSON responses in `/tmp/weeslack-debug/`. Requires a script reload.
+```
+/set plugins.var.python.slack.record_events true
+```
+
 
 Support
 --------------
