@@ -3195,7 +3195,11 @@ def command_openweb(data, current_buffer, args):
     else:
         now = SlackTS()
         url = "https://{}/archives/{}/p{}000000".format(channel.team.domain, channel.slack_name, now.majorstr())
+    cmd = ['xdg-open', url]
+    print '[%s]' % ', '.join(map(str, cmd))
+    subprocess.call(cmd)
     w.prnt_date_tags(channel.team.channel_buffer, SlackTS().major, "openweb,logger_backlog_end,notify_none", url)
+    weechat.command(current_buffer, "/window refresh")
 
 
 def command_nodistractions(data, current_buffer, args):
